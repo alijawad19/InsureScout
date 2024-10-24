@@ -1,0 +1,14 @@
+Premium API response:
+{
+    "tenure": "1",
+    "sum_insured": 500000,
+    "provider_id": 1,
+    "insurer_name": "HealthGuard",
+    "insurer_logo": "HealthGuard.png",
+    "net_premium": 2000,
+    "total_premium": 2360,
+    "gst": 0.18
+}
+
+make sum insured dynamic
+make tenure dynamic
