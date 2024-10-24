@@ -1,0 +1,178 @@
+/* index.css */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;900&display=swap");
+
+*,
+body {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    /* background-color: #152733; */
+    /* Light Green */
+    /* background-color: #e0f7e6; */
+
+    /* Light Blue */
+    /* background-color: #e7f3fe; */
+
+    /* Peach */
+    /* background-color: #ffe4d6; */
+
+    /* Lavender */
+    /* background-color: #f3e8ff; */
+
+    /* Mint Green */
+    background-color: #e8f8f2;
+
+    /* Light Gray */
+    /* background-color: #f7f7f7; */
+
+    /* Beige */
+    /* background-color: #f9f0e8; */
+
+    /* Cream */
+    /* background-color: #fff9e6; */
+
+    /* Soft Taupe */
+    /* background-color: #e7ded7; */
+
+    /* Pale Yellow */
+    /* background-color: #fff9c4; */
+
+    /* Powder Blue */
+    /* background-color: #b3e5fc; */
+
+    /* Blush Pink */
+    /* background-color: #f8d3d3; */
+
+    /* Sky Blue */
+    /* background-color: #d0e8ff; */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-holder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.form-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
+}
+
+.form-content label {
+    color: #000000;
+}
+
+.form-items {
+    border: 3px solid #000000;
+    padding: 40px;
+    width: 100%;
+    max-width: 540px;
+    border-radius: 10px;
+    text-align: left;
+    transition: all 0.4s ease;
+}
+
+.form-items h3 {
+    color: #000000;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.form-items p {
+    color: #000000;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 20px;
+    margin-bottom: 30px;
+}
+
+.form-items input[type="text"],
+.form-items input[type="password"],
+.form-items input[type="email"],
+.form-items input[type="tel"],
+.form-items input[type="date"] {
+    width: 100%;
+    padding: 9px 20px;
+    text-align: left;
+    border: none;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 15px;
+    font-weight: 300;
+    color: #8d8d8d;
+    margin-top: 16px;
+}
+
+.form-items .invalid-feedback {
+    color: #ff606e;
+}
+
+.form-items .valid-feedback {
+    color: #2acc80;
+}
+
+.form-button {
+    margin-top: 20px;
+}
+
+.form-button button {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #6c757d;
+    color: #000000;
+    border: none;
+    border-radius: 6px;
+}
+
+.form-button button:hover {
+    background-color: #495056;
+}
+
+
+/* Common Header Styling */
+.navbar {
+    padding: 15px 0;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 40px; /* Adjust size as needed */
+    height: auto;
+    margin-right: 10px;
+}
+
+.site-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Right aligned links */
+.nav-link {
+    font-size: 16px;
+    color: #007bff; /* Customize link color */
+}
+
+.nav-link:hover {
+    color: #0056b3; /* Darker color on hover */
+}

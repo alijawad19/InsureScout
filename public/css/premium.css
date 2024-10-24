@@ -1,0 +1,70 @@
+.container {
+    max-width: 99%;
+}
+
+/* Button styling */
+.btn-custom {
+    background-color: #28a745; /* Customize as needed */
+    color: white;
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.btn-custom:hover {
+    background-color: #218838; /* Darker shade on hover */
+}
+
+/* Image styling */
+.img-fluid {
+    max-width: 50px; /* Maintain size if desired */
+    height: auto; /* Keep aspect ratio */
+}
+
+/* Sidebar styling */
+.sidebar {
+    padding: 15px;
+    border-right: 1px solid #ddd; /* Border for separation */
+}
+
+/* Sidebar heading */
+.sidebar h2 {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* List group styling */
+.list-group {
+    margin-top: 10px; /* Space between heading and list */
+}
+
+.list-group-item {
+    display: flex; /* Flex display for list items */
+    justify-content: space-between; /* Space between label and value */
+    padding: 10px 15px; /* Padding for list items */
+}
+
+/* Insurer table heading */
+.insurer-table h2 {
+    margin-bottom: 20px; /* Spacing before the heading */
+}
+
+.insurer-item {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    border: 1px solid #ddd; /* Border around insurer items */
+    padding: 15px; /* Padding inside insurer items */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.insurer-item .d-flex {
+    flex-grow: 1; /* Allow the flex container to grow */
+    margin-bottom: 10px; /* Space between details and button */
+}
+
+.btn-custom {
+    align-self: flex-end; /* Align button to the end */
+    padding: 10px 20px; /* Adjust padding as needed */
+    background-color: #28a745; /* Customize as needed */
+    color: white;
+    transition: background-color 0.3s; /* Smooth transition */
+}
