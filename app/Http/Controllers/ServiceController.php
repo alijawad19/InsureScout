@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PremiumData;
 use App\Models\ProposalData;
+use App\Models\ProposalForm;
 use App\Models\Provider;
 use DateTime;
 use Illuminate\Http\Request;
@@ -134,6 +135,8 @@ class ServiceController extends Controller
         if (!$enqId || !($data = PremiumData::find($enqId))) {
             return redirect()->route('index');
         }
+
+        $proposalForm = ProposalForm::where('enqId', $enqId)->first();
     
         // Pass this data to the view
         return view('pages.proposal', [
@@ -146,7 +149,73 @@ class ServiceController extends Controller
             'netPremium' => $proposalData->net_premium,
             'gst' => $proposalData->gst,
             'totalPremium' => $proposalData->total_premium,
-            'data' => $data
+            'data' => $data,
+            'proposalForm' => $proposalForm
+        ]);
+    }
+
+    public function storeProposalData(Request $request)
+    {
+        $enqId = $request->query('enqId');
+
+        $validated = $request->validate([
+            'enqId' => 'required|integer',
+            'address' => 'required|string|max:255',
+            'nominee_name' => 'required|string|max:255',
+            'nominee_relation' => 'required|string|max:50',
+            'nominee_dob' => 'required|date',
+            'nominee_contact' => 'required|string|max:10',
+        ]);
+
+        ProposalForm::updateOrCreate(
+            ['enqId' => $validated['enqId']],
+            [
+                'address' => $validated['address'],
+                'nominee_name' => $validated['nominee_name'],
+                'nominee_relation' => $validated['nominee_relation'],
+                'nominee_dob' => $validated['nominee_dob'],
+                'nominee_contact' => $validated['nominee_contact'],
+            ]
+        );
+
+        return redirect()->route('proposal.confirm', ['enqId' => $enqId]);    
+    }
+
+    public function confirmProposal(Request $request)
+    {
+        $enqId = $request->query('enqId');
+    
+        $proposalData = ProposalData::where('enqId', $enqId)->first();
+    
+        if (!$proposalData) {
+            return redirect()->route('index')->with('error', 'No proposal data found.');
+        }
+
+        $provider = Provider::where('provider_id', $proposalData->provider_id)->first();
+
+        $data = PremiumData::find($enqId);
+
+        $sumInsuredInLakh = $this->convertToLakh($proposalData->sum_insured);
+
+        if (!$enqId || !($data = PremiumData::find($enqId))) {
+            return redirect()->route('index');
+        }
+
+        $proposalForm = ProposalForm::where('enqId', $enqId)->first();
+    
+        // Pass this data to the view
+        return view('pages.proposal-confirmation', [
+            'enqId' => $proposalData->enqId,
+            'providerId' => $proposalData->provider_id,
+            'insurerName' => $provider->ic_name,
+            'tenure' => $proposalData->tenure,
+            'sumInsured' => $proposalData->sum_insured,
+            'sumInsuredInLakh' => $sumInsuredInLakh,
+            'netPremium' => $proposalData->net_premium,
+            'gst' => $proposalData->gst,
+            'totalPremium' => $proposalData->total_premium,
+            'data' => $data,
+            'proposalForm' => $proposalForm
         ]);
     }
 
