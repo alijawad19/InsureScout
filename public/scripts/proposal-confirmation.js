@@ -3,19 +3,21 @@ $(document).ready(function() {
         e.preventDefault();
 
         $.ajax({
-            url: "{{ url('buy-now') }}",
+            url: `/generate-proposal/${providerId}`,
             method: "POST",
             data: {
-                _token: "{{ csrf_token() }}",
-                enqId: "{{ $enqId }}",
-                user_id: user_data.id
+                enqId: enqId,
+                sum_insured: sumInsured,
+                tenure: tenure,
+            },
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
             success: function(response) {
-                if (response.status === "success") {
-                    // Redirect to confirmation or the specified return link
-                    window.location.href = "{{ url('confirmation') }}";
+                if (response.payment_url) {
+                    window.location.href = response.payment_url;
                 } else {
-                    $('#errorMessage').html(response.message);
+                    $('#errorMessage').html("Payment URL is missing in the response.");
                     $('#errorModal').modal('show');
                 }
             },

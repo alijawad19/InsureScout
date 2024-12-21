@@ -13,6 +13,7 @@ Route::get('/proposal/{enqId}', [ServiceController::class, 'proposal']);
 Route::get('/proposal', [ServiceController::class, 'showProposal'])->name('proposal.show');
 Route::post('/proposal', [ServiceController::class, 'storeProposalData']);
 Route::get('/proposal-confirmation', [ServiceController::class, 'confirmProposal'])->name('proposal.confirm');
-
-Route::post('/calculate-premium', [ServiceController::class, 'calculatePremium']);
-Route::post('/generate-proposal', [ServiceController::class, 'generateProposal']);
+Route::post('/generate-proposal/{providerId}', [ServiceController::class, 'generateProposal']);
+Route::get('/payment-confirmation', [ServiceController::class, 'paymentReturn']);
+Route::get('/confirmation', [ServiceController::class, 'showProposal'])->name('payment.show');
+Route::post('/download-policy/{enqId}', [ServiceController::class, 'downloadPdf']);

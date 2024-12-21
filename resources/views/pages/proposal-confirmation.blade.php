@@ -80,6 +80,10 @@
 </div>
 <script>
     var user_data = @json($data);
+    var sumInsured = @json($sumInsured);
+    var tenure = @json($tenure);
+    var enqId = @json($enqId);
+    var providerId = @json($providerId);
 </script>
 <script src="{{ asset('scripts/proposal-confirmation.js') }}"></script>
 @endsection

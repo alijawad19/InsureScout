@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PaymentData;
 use App\Models\PremiumData;
 use App\Models\ProposalData;
 use App\Models\ProposalForm;
@@ -64,7 +65,7 @@ class ServiceController extends Controller
         $controllerClassName = sprintf('App\\Http\\Controllers\\%sController', $provider->ic_name);
 
         if (!class_exists($controllerClassName)) {
-            return response()->json(['error' => 'Calculation method not found for this provider'], 404);
+            return response()->json(['error' => 'PRemium method not found for this provider'], 404);
         }
 
         $premiumData = (new $controllerClassName())->calculatePremium($sumInsured, $tenure, $age, $userData);
@@ -217,6 +218,106 @@ class ServiceController extends Controller
             'data' => $data,
             'proposalForm' => $proposalForm
         ]);
+    }
+
+    public function generateProposal($providerId)
+    {
+        $sumInsured = request()->input('sum_insured');
+        $tenure = request()->input('tenure');
+        $enqId = request()->input('enqId');
+    
+        $provider = Provider::where('provider_id', $providerId)->first();
+    
+        if (!$provider) {
+            return response()->json(['error' => 'Provider not found'], 404);
+        }
+
+        $controllerClassName = sprintf('App\\Http\\Controllers\\%sController', $provider->ic_name);
+
+        if (!class_exists($controllerClassName)) {
+            return response()->json(['error' => 'Proposal method not found for this provider'], 404);
+        }
+
+        $proposalResponse = (new $controllerClassName())->createProposal($enqId);
+    
+        return response()->json($proposalResponse ?? null);
+    }
+
+    public function paymentReturn(Request $request)
+    {
+        $enqId = $request->query('enqId');
+        $premiumData = PremiumData::find($enqId);
+
+        if (!$premiumData) {
+            return redirect()->route('index');
+        }
+
+        $proposalData = ProposalData::where('enqId', $enqId)->first();
+        
+        if (!$proposalData) {
+            return redirect()->route('index');
+        }
+
+        $providerId = $proposalData->provider_id;
+        $message = "Dear $premiumData->name, your policy has been failed.";
+        $policyNumber = null;
+
+        switch ($providerId) {
+            case 1:
+                $policyNumber = $request->query('application_id');
+                break;
+        }
+
+        if (!empty($policyNumber)) {
+            $message = "Dear $premiumData->name, your policy has been successfully processed!";
+            PaymentData::updateOrCreate(
+                ['enqId' => $enqId],
+                [
+                    'application_id' => $policyNumber,
+                    'payment_status' => '1',
+                ]
+            );
+        }
+
+        $amount = $proposalData->total_premium;
+
+        $provider = Provider::where('provider_id', $providerId)->first();
+
+        return view('pages.payment-confirmation', [
+            'enqId' => $proposalData->enqId,
+            'message' => $message,
+            'policyNumber' => $policyNumber,
+            'amount' => $amount,
+            "insurer_name" => $provider->ic_name,
+            "insurer_logo" => $provider->ic_name . ".png"
+        ]);
+    }
+
+    public function downloadPdf($enqId)
+    {
+        $proposalData = ProposalData::where('enqId', $enqId)->first();
+        
+        if (!$proposalData) {
+            return redirect()->route('index');
+        }
+
+        $providerId = $proposalData->provider_id;
+
+        $provider = Provider::where('provider_id', $providerId)->first();
+    
+        if (!$provider) {
+            return response()->json(['error' => 'Provider not found'], 404);
+        }
+
+        $controllerClassName = sprintf('App\\Http\\Controllers\\%sController', $provider->ic_name);
+
+        if (!class_exists($controllerClassName)) {
+            return response()->json(['error' => 'Download PDF method not found for this provider'], 404);
+        }
+
+        $pdfDownloadResponse = (new $controllerClassName())->downloadPdf($enqId);
+    
+        return response()->json($pdfDownloadResponse ?? null);
     }
 
     private function logToFile($message, $uniqueId, $logType = 'request')
