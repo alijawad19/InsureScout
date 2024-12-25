@@ -14,13 +14,13 @@
                     <h3 class="mb-0">{{ $message }}</h3>
                 </div>
                 <div class="card-body p-4">
+                    <!-- Insurance Company Logo -->
+                    <div class="text-center mb-4">
+                        <img src="{{ asset('images/' . $insurer_logo) }}" alt="{{ $insurer_name }}" 
+                        class="img-fluid rounded" style="max-width: 180px;">
+                    </div>
+                    
                     @if ($policyNumber)
-                        <!-- Insurance Company Logo -->
-                        <div class="text-center mb-4">
-                            <img src="{{ asset('images/' . $insurer_logo) }}" alt="{{ $insurer_name }}" 
-                                 class="img-fluid rounded" style="max-width: 180px;">
-                        </div>
-
                         <!-- Policy Details -->
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="mb-0">Policy Number:</h5>

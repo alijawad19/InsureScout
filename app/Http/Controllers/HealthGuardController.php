@@ -131,4 +131,25 @@ class HealthGuardController extends Controller
         ];
 
     }
+
+    public function paymentReturn($request, $name)
+    {
+        $payment = $request->payment;
+        $policyNumber = null;
+
+        $message = "Dear $name, your policy has been failed.";
+        
+        if($payment == 'success')
+        {
+            $message = "Dear $name, your policy has been successfully processed!";
+            $policyNumber = $request->application_id;
+        }
+
+        $result = [
+            'message' => $message,
+            'policyNumber' => $policyNumber ?? null
+        ];
+
+        return $result;
+    }
 }

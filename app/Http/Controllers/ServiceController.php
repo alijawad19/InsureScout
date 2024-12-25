@@ -259,17 +259,21 @@ class ServiceController extends Controller
         }
 
         $providerId = $proposalData->provider_id;
-        $message = "Dear $premiumData->name, your policy has been failed.";
-        $policyNumber = null;
 
-        switch ($providerId) {
-            case 1:
-                $policyNumber = $request->query('application_id');
-                break;
+        $provider = Provider::where('provider_id', $providerId)->first();
+
+        $controllerClassName = sprintf('App\\Http\\Controllers\\%sController', $provider->ic_name);
+
+        if (!class_exists($controllerClassName)) {
+            return response()->json(['error' => 'Proposal method not found for this provider'], 404);
         }
 
+        $paymentReturn = (new $controllerClassName())->paymentReturn($request, $premiumData->name);
+        
+        $message = $paymentReturn['message'];
+        $policyNumber = $paymentReturn['policyNumber'];
+
         if (!empty($policyNumber)) {
-            $message = "Dear $premiumData->name, your policy has been successfully processed!";
             PaymentData::updateOrCreate(
                 ['enqId' => $enqId],
                 [
